@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <HelloWorld msg="laravel-Websocket Demo" desc="等待服务器广播消息 📢"/>
   </div>
 </template>
 

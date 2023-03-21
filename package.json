@@ -9,6 +9,9 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "laravel-echo": "^1.15.0",
+    "pusher-js": "^8.0.1",
+    "socket.io-client": "^4.6.1",
     "vue": "^2.6.11"
   },
   "devDependencies": {
