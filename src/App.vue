@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="laravel-Websocket Demo" desc="等待服务器广播消息 📢"/>
+<!--    <img alt="Vue logo" src="./assets/logo.png">-->
+    <HelloWorld msg="BQL websocket 调试工具" desc="等待服务器广播消息 📢"/>
+
   </div>
 </template>
 

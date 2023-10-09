@@ -12,7 +12,8 @@
     "laravel-echo": "^1.15.0",
     "pusher-js": "^8.0.1",
     "socket.io-client": "^4.6.1",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-json-viewer": "^2.2.22"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.13",
