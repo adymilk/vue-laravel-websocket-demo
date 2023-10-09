@@ -33,7 +33,6 @@
     </div>
 
     <div id="right" style="flex: 1; padding: 10px">
-      <h2>服务器返回数据</h2>
       <JsonViewer
           style="text-align: left"
           :value="jsonData"
@@ -111,7 +110,7 @@ export default {
               this.graphsData.push(e.OTGraph)
               this.OTTitle = e.OTTitle
             });
-        this.jsonData = '请在 Apifox 上发起一次接口请求后，就可以在这里看到服务器返回的数据啦✨'
+        this.jsonData = '请在接口文档上发起一次接口请求后，就可以在这里看到服务器返回的数据啦✨'
 
       } else {
         // Disconnect from the socket.
