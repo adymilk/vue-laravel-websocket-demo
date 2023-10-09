@@ -23,7 +23,7 @@
         <label for="forceTLS">Force TLS:</label>
         <input type="checkbox" id="forceTLS" v-model="forceTLS">
       </div>
-      <p><i>{{ isConnected ? '服务器连接成功✅！' : '连接已断开' }}</i></p>
+      <p><i>{{ isConnected ? '服务器连接成功✅' : '连接已断开😭' }}</i></p>
 
       <button @click="toggleConnection">
         {{ isConnected ? '断开连接' : '连接服务器' }}
