@@ -23,10 +23,11 @@
         <label for="forceTLS">Force TLS:</label>
         <input type="checkbox" id="forceTLS" v-model="forceTLS">
       </div>
-      <p><i>{{ isConnected ? '服务器连接成功✅' : '连接已断开😭' }}</i></p>
+      <p><i>{{ isConnected ? '服务器连接成功✅' : '连接已断开 ❌' }}</i></p>
 
-      <button @click="toggleConnection">
-        {{ isConnected ? '断开连接' : '连接服务器' }}
+      <button @click="toggleConnection" :class="isConnected ? 'btn-success' : 'btn-primary'">
+
+      {{ button_text }}
       </button>
 
 
@@ -51,10 +52,15 @@
 
 <script>
 
+// 连接 websocket 组件
 import Echo from 'laravel-echo';
 window.Pusher = require('pusher-js');
 
 import JsonViewer from 'vue-json-viewer'
+
+const connect_is_close = '连接已断开!'
+const connect_is_success = '连接成功！正在监听频道数据返回......不清楚如何使用，与我们联系 ☎️ 021 32586732'
+
 export default {
   name: 'HelloWorld',
   components:{
@@ -67,14 +73,16 @@ export default {
     return {
       graphsData: [],
       OTTitle: '',
-      jsonData: '连接已断开，请先建立连接后等待服务器返回数据',
-      appKey: 'b3CnDSGvJUDhqqEJekBddzUh',
-      wsHost: '222.71.235.219',
-      cluster: 'ap3',
-      wsPort: 6001,
-      forceTLS: false,
-      channel: 'public',
+      jsonData: connect_is_close,
+      appKey: localStorage.getItem('appKey') ?? 'b3CnDSGvJUDhqqEJekBddzUh',
+      wsHost: localStorage.getItem('wsHost') ?? '127.0.0.1',
+      cluster: localStorage.getItem('cluster') ?? 'ap3',
+      wsPort: localStorage.getItem('wsPort') ?? 6001,
+      forceTLS: localStorage.getItem('forceTLS') === 'true' ?? false,
+      channel: localStorage.getItem('channel') ?? 'public',
       isConnected: false, // Add a property to track the connection status.
+      buttonDisable: false,
+      button_text: '👆 连接服务器',
     };
   },
 
@@ -85,6 +93,13 @@ export default {
           alert('Please fill in all required fields.');
           return;
         }
+        this.button_text = '⏰ 连接中，请稍等...'
+        localStorage.setItem('appKey', this.appKey)
+        localStorage.setItem('wsHost', this.wsHost)
+        localStorage.setItem('cluster', this.cluster)
+        localStorage.setItem('wsPort', this.wsPort)
+        localStorage.setItem('forceTLS', toString(this.forceTLS))
+        localStorage.setItem('channel', this.channel)
 
 
         // Initialize the Echo object with the updated configuration.
@@ -97,34 +112,35 @@ export default {
           forceTLS: this.forceTLS,
         });
 
-        // Connect to the socket.
-        // window.Echo.connect();
 
-        // Set the isConnected property to true.
-        this.isConnected = true;
+
+
         window.Echo.channel(this.channel)
             .listen('BroadcastAnalysisResults', (e) => {
               console.log(e);
               this.jsonData = e
-              this.graphsData = []
-              this.graphsData.push(e.OTGraph)
-              this.OTTitle = e.OTTitle
-            });
-        this.jsonData = '请在接口文档上发起一次接口请求后，就可以在这里看到服务器返回的数据啦✨'
+              // this.graphsData = []
+              // this.graphsData.push(e.OTGraph)
+              // this.OTTitle = e.OTTitle
+            })
+            .subscribed(() => {
+              console.log('Subscription succeeded!');
+              this.isConnected = true;
+              this.jsonData = connect_is_success
+              this.button_text = '✋ 断开连接'
 
+            })
       } else {
         // Disconnect from the socket.
         window.Echo.disconnect();
-        this.jsonData = '连接已断开，请先建立连接后等待服务器返回数据'
-
         // Set the isConnected property to false.
         this.isConnected = false;
+        this.jsonData = connect_is_close
+        this.button_text = '👆 连接服务器'
       }
     },
   },
-  mounted() {
 
-  },
 };
 </script>
 
@@ -175,7 +191,12 @@ button {
   padding: 10px 20px;
   cursor: pointer;
 }
-
+.btn-success {
+  background-color: darkseagreen;
+}
+.btn-primary {
+  background-color: #007bff;
+}
 button:hover {
   background-color: #0056b3;
 }
