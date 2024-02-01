@@ -4,6 +4,10 @@
       <h1>{{ msg }}</h1>
       <p><a href="https://github.com/adymilk/vue-laravel-websocket-demo">点击获取本工具源代码</a></p>
       <div class="input-group">
+        <label for="appKey">Model:</label>
+        <input type="text" id="model" v-model="model" required>
+      </div>
+      <div class="input-group">
         <label for="appKey">KEY:</label>
         <input type="text" id="appKey" v-model="appKey" required>
       </div>
@@ -12,7 +16,7 @@
         <input type="text" id="wsHost" v-model="wsHost" required>
       </div>
       <div class="input-group">
-        <label for="channel">channel:</label>
+        <label for="channel">Channel:</label>
         <input type="text" id="channel" v-model="channel" required>
       </div>
       <div class="input-group">
@@ -74,6 +78,7 @@ export default {
       graphsData: [],
       OTTitle: '',
       jsonData: connect_is_close,
+      model: localStorage.getItem('model') ?? 'BroadcastRawDataToMinitabClient',
       appKey: localStorage.getItem('appKey') ?? 'b3CnDSGvJUDhqqEJekBddzUh',
       wsHost: localStorage.getItem('wsHost') ?? '127.0.0.1',
       cluster: localStorage.getItem('cluster') ?? 'ap3',
@@ -94,6 +99,7 @@ export default {
           return;
         }
         this.button_text = '⏰ 连接中，请稍等...'
+        localStorage.setItem('model', this.model)
         localStorage.setItem('appKey', this.appKey)
         localStorage.setItem('wsHost', this.wsHost)
         localStorage.setItem('cluster', this.cluster)
@@ -116,7 +122,7 @@ export default {
 
 
         window.Echo.channel(this.channel)
-            .listen('BroadcastAnalysisResults', (e) => {
+            .listen(this.model, (e) => {
               console.log(e);
               this.jsonData = e
               // this.graphsData = []
@@ -128,8 +134,9 @@ export default {
               this.isConnected = true;
               this.jsonData = connect_is_success
               this.button_text = '✋ 断开连接'
-
             })
+
+        console.log(window.Echo.socketId())
       } else {
         // Disconnect from the socket.
         window.Echo.disconnect();
