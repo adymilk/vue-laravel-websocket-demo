@@ -78,7 +78,7 @@ export default {
       graphsData: [],
       OTTitle: '',
       jsonData: connect_is_close,
-      model: localStorage.getItem('model') ?? 'BroadcastRawDataToMinitabClient',
+      model: localStorage.getItem('model') ?? 'BroadcastAnalysisResults',
       appKey: localStorage.getItem('appKey') ?? 'b3CnDSGvJUDhqqEJekBddzUh',
       wsHost: localStorage.getItem('wsHost') ?? '127.0.0.1',
       cluster: localStorage.getItem('cluster') ?? 'ap3',
